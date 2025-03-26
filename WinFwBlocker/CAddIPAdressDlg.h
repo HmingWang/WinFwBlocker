@@ -27,4 +27,6 @@ public:
 	afx_msg void OnBnClickedOk();
 	CString IPAddress;
 	afx_msg void OnBnClickedCancel();
+	afx_msg void OnEnChangeEdit1();
+	afx_msg LRESULT OnNcHitTest(CPoint point);
 };
