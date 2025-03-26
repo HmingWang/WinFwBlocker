@@ -33,6 +33,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	void RemoveDuplicates();
+	//bool CompareIP(const std::string& a, const std::string& b);
 
 public:
 	afx_msg void OnBnClickedButton1();

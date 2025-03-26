@@ -103,21 +103,53 @@ HCURSOR CWinFwBlockerDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+bool compareIP(const std::string& a, const std::string& b) {
+	auto split_ip = [](const std::string& ip) {
+		std::vector<int> parts;
+		std::stringstream ss(ip);
+		std::string part;
+		while (std::getline(ss, part, '.')) {
+			parts.push_back(std::stoi(part));
+		}
+		return parts;
+		};
+
+	std::vector<int> a_parts = split_ip(a);
+	std::vector<int> b_parts = split_ip(b);
+
+	for (int i = 0; i < 4; ++i) {
+		if (a_parts[i] < b_parts[i]) return true;
+		if (a_parts[i] > b_parts[i]) return false;
+	}
+	return false;
+}
+
 void CWinFwBlockerDlg::RemoveDuplicates()
 {
-	std::set<CString> set;
+	//1. 载入set
+	std::set<std::string> set;
 	int count = m_listbox.GetCount();
-	for (int i = 0;i < count;++i) {
+	for (int i = 0; i < count; ++i) {
 		CString tmp;
 		m_listbox.GetText(i, tmp);
-		set.insert(tmp);
+		set.insert(std::string(CT2CA(tmp)));
 	}
-
+	//2. 清空
 	m_listbox.ResetContent();
-	for(auto e:set){
-		m_listbox.AddString(e);
+
+	//3. 排序
+	std::vector<std::string> list(set.begin(), set.end());
+	std::sort(list.begin(), list.end(), compareIP);
+
+	//4. 放回
+	for (const auto& e : list) {
+		m_listbox.AddString(CA2CT(e.c_str()));
 	}
 }
+
+
+
 
 
 void CWinFwBlockerDlg::OnBnClickedButton1()

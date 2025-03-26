@@ -17,4 +17,5 @@
 #include "sstream"
 #include "cwctype"
 #include "set"
+#include "algorithm"
 #endif //PCH_H
